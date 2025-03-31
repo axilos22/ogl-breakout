@@ -18,3 +18,17 @@ void print_file_content(string path) {
     }
     file.close();
 }
+
+std::stringstream get_file_as_stringstream(const std::string &file_path) {
+    std::ifstream file;
+    std::stringstream buffer_lines;
+    std::string line;
+
+    file.open(file_path);
+    while (std::getline(file, line)) {
+        buffer_lines << line << "\n";
+    }
+    buffer_lines.str("");
+    file.close();
+    return buffer_lines;
+}
