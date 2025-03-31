@@ -59,5 +59,5 @@ int main(int argc, char **argv) {
         print_all_args(argc, argv);
         break;
     }
-    return 0;
+    return 0; // technically unreachable
 }

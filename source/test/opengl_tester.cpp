@@ -4,20 +4,20 @@
 
 #include <iostream>
 
-enum Scenario { GLFW_INIT, GLAD_INIT, OPENGL_WINDOW };
+enum Scenario { GLFW_INIT, GLAD_INIT, CREATE_WINDOW };
 
 using namespace std;
 
 constexpr int MIN_ARGUMENT_NUMBER = 2;
 constexpr int NORMAL_ARGUMENT_NUMBER = 2;
 
+void error_callback(int error, const char *description) {
+    fprintf(stderr, "Error: %s\n", description);
+}
+
 int glfw_init() {
     int res = GLFW_FALSE;
-    try {
-        res = glfwInit();
-    } catch (exception &e) {
-        cout << e.what() << endl;
-    }
+    res = glfwInit();
     glfwTerminate();
     if (res == GLFW_TRUE) {
         return 0;
@@ -34,22 +34,19 @@ int glad_init() {
     return 0;
 }
 
-int openlg_window(const int width = 640, const int height = 480,
+int create_window(const int width = 640, const int height = 480,
                   const int timeout = 2000) {
     auto gl_ok = glfw_init();
-    auto glad_ok = glad_init();
-    if (gl_ok && glad_ok) {
-        auto window =
-            glfwCreateWindow(width, height, "Test Window", nullptr, nullptr);
-        glfwMakeContextCurrent(window);
-        auto time = 0;
-        while (time < timeout) {
-            glfwPollEvents();
-            glClear(GL_COLOR_BUFFER_BIT);
-            glfwSwapBuffers(window);
-            time++;
-        }
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    GLFWwindow *window =
+        glfwCreateWindow(width, height, "Test window", NULL, NULL);
+    if (!window) {
+        cout << "Window or OpenGL context creation failed" << endl;
+        return -1;
     }
+    glfwDestroyWindow(window);
+    return 0;
 }
 
 int main(int argc, char **argv) {
@@ -58,8 +55,6 @@ int main(int argc, char **argv) {
         return -1;
     }
     auto scenar = static_cast<Scenario>(stoi(argv[1]));
-    // auto width = stoi(argv[1]);
-    // auto height = stoi(argv[2]);
     switch (scenar) {
     case GLFW_INIT:
         cout << "glfw_init" << endl;
@@ -71,9 +66,9 @@ int main(int argc, char **argv) {
         return glad_init();
         break;
 
-    case OPENGL_WINDOW:
-        cout << "openlg_window" << endl;
-        return openlg_window();
+    case CREATE_WINDOW:
+        cout << "create_window" << endl;
+        return create_window();
         break;
 
     default:
@@ -81,5 +76,5 @@ int main(int argc, char **argv) {
         return -1;
         break;
     }
-    return 0;
+    return 0; // technically unreachable
 }
