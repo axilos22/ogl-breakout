@@ -4,4 +4,4 @@
 #include <sstream>
 #include <string>
 
-void print_file_content(string path);
+void print_file_content(std::string path);
