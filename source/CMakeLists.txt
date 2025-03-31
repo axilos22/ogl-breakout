@@ -9,3 +9,4 @@ target_link_libraries(breakout PRIVATE OpenGL::GL glfw glad)
 
 target_include_directories(breakout PRIVATE ${OPENGL_INCLUDE_DIRS})
 
+add_subdirectory(test)
