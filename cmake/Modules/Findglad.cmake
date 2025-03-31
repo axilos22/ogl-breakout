@@ -8,8 +8,10 @@ if(DEFINED ENV{GLAD_DIR})
     set(glad_INCLUDE_DIRS ${GLAD_DIR}/include)
 
     # Create dedicated lib
-    add_library(glad SHARED ${GLAD_DIR}/src/glad.c)
-    target_include_directories(glad PUBLIC ${glad_INCLUDE_DIRS})
+    if(NOT TARGET glad)
+        add_library(glad SHARED ${GLAD_DIR}/src/glad.c)
+        target_include_directories(glad PUBLIC ${glad_INCLUDE_DIRS})
+    endif()
 else()
     set(glad_FOUND FALSE)
     message(SEND_ERROR "Unable to find glad. Check env variable GLAD_DIR")
