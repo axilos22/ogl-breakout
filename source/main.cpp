@@ -1,9 +1,13 @@
-#include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "file_operations.hpp"
+
 int main(int, char**){
-    std::cout << "Breakout starting..." << std::endl;;
+    std::cout << "Breakout starting..." << std::endl;
+
+    std::cout << "Read files" << std::endl;
+    print_all_lines("shaders/vertex.txt");
 
     if(!glfwInit()) {
         std::cout << "OpenGL could not start." << std::endl;
