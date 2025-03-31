@@ -13,9 +13,10 @@ int main(int, char**){
     GLFWwindow* window = glfwCreateWindow(640, 480, "My Window", NULL, NULL);
     glfwMakeContextCurrent(window);
 
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        glfwTerminate();
-        std::cout << "GLAD could not start." << std::endl;
+    int glad_version = gladLoadGL();
+    if (glad_version == 0) {
+        std::cout << "Failed to initialize OpenGL context" << std::endl
+        << "glad loading gave: " << glad_version << std::endl;
         return -1;
     }
 
