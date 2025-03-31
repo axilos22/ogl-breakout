@@ -1,5 +1,6 @@
 # Distributed under the GNU GENERAL PUBLIC LICENSE v3 License
 # author: axilos22
+# WARNING: Obsolete in current implementation
 
 if(DEFINED ENV{GLAD_DIR})
     set(glad_FOUND TRUE)
