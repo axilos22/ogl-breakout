@@ -1,5 +1,8 @@
-add_subdirectory(thirdparty)
+if(NOT ${CI})
+    add_subdirectory(thirdparty)
+endif()
 add_subdirectory(common)
-add_subdirectory(app)
-
+if(NOT ${CI})
+    add_subdirectory(app)
+endif()
 add_subdirectory(test)

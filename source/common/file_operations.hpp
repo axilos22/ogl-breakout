@@ -4,4 +4,4 @@
 #include <sstream>
 #include <string>
 
-void print_all_args(int argc, char** argv);
+void print_file_content(string path);
