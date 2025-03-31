@@ -1,7 +1,7 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "file_operations.hpp"
+#include <iostream>
 
 enum Scenario {
     GLFW_INIT,
@@ -21,10 +21,16 @@ int glfw_init() {
     } catch (exception& e) {
         cout << e.what() << endl;
     }
-    return res;
+    glfwTerminate();
+    if(res == GLFW_TRUE) {
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 int glad_init() {
+    glfwInit();
     if (gladLoadGL() == 0) {
         return -1;
     }

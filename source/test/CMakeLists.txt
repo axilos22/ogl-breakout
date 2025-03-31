@@ -1,27 +1,19 @@
-add_executable(fileop file_operations.cpp)
+set(TEST_RESOURCE_PATH ${CMAKE_SOURCE_DIR}/resources/test)
 
-target_include_directories(fileop
-    PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}/..
-)
+add_executable(fileop_tester file_operations_tester.cpp)
 
-add_test(NAME Runs COMMAND fileop 1 abc 222 foo bar)
-add_test(NAME EMPTY_RUN COMMAND fileop 0)
-add_test(NAME FILE_CHECK COMMAND fileop 1 WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR})
+target_link_libraries(fileop_tester PRIVATE file_operation argument_parser)
+
+add_test(NAME Runs COMMAND fileop_tester 1 abc 222 foo bar)
+add_test(NAME EMPTY_RUN COMMAND fileop_tester 0)
+add_test(NAME FILE_CHECK COMMAND fileop_tester 1 WORKING_DIRECTORY ${TEST_RESOURCE_PATH})
 
 if(TEST_OPENGL)
     find_package(OpenGL REQUIRED)
     find_package(glfw3 REQUIRED HINTS $ENV{GLFW_DIR})
-    find_package(glad REQUIRED)
 
     add_executable(opengl_tester opengl_tester.cpp)
     target_link_libraries(opengl_tester PRIVATE OpenGL::GL glfw glad)
-
-    target_include_directories(opengl_tester
-        PRIVATE
-            ${OPENGL_INCLUDE_DIRS}
-            ${CMAKE_CURRENT_LIST_DIR}/..
-    )
 
     add_test(NAME OPENGL_INIT COMMAND opengl_tester 0)
     add_test(NAME GLAD_INIT COMMAND opengl_tester 1 640 480)

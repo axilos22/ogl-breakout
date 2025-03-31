@@ -9,13 +9,6 @@ using namespace std;
 
 constexpr int MIN_ARGUMENT_NUMBER = 2;
 constexpr int NORMAL_ARGUMENT_NUMBER = 2;
-char const* SHADERS_PATH = "../shaders";
-
-void print_all_args(int argc, char** argv) {
-    for(int argn=0; argn<argc; argn++) {
-        cout << "[" << argn << "] = " << argv[argn] << endl;
-    }
-}
 
 int empty_run() {
     string test = "abcd";
@@ -26,8 +19,7 @@ int file_check() {
     ifstream file;
     string line;
 
-    string shaders1(SHADERS_PATH);
-    shaders1 += "/fragment.txt";
+    string shaders1("test_file.txt");
     
     file.open(shaders1);
     if(!file.is_open()) {
@@ -42,7 +34,7 @@ int file_check() {
     return 0;
 }
 
-int main(int argc, char** argv)  {
+int main(int argc, char** argv) {
     if (argc < MIN_ARGUMENT_NUMBER) {
         cout << "Missing Scenario argument" << endl;
         return -1;
