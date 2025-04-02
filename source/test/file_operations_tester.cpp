@@ -1,4 +1,4 @@
-#include "arg_parser.hpp"
+#include "argument_parser.hpp"
 #include "file_operations.hpp"
 
 enum Scenario { EMPTY_RUN, FILE_CHECK };

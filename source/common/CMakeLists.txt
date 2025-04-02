@@ -1,2 +1,2 @@
-add_subdirectory(arg_parser)
+add_subdirectory(argument_parser)
 add_subdirectory(file_operations)
