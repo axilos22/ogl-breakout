@@ -15,62 +15,55 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <sstream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-enum class ArgumentType { BOOL, NUMERIC, TEXT };
-
-class Argument {
+template <typename T> class Argument {
   protected:
     string long_name;
-    string short_name;
-    ArgumentType type;
-
-  public:
-    Argument(string long_name, string short_name,
-             ArgumentType type = ArgumentType::BOOL)
-        : long_name(long_name), short_name(short_name), type(type) {}
-    ~Argument() = default;
-};
-
-template <typename T> class ValueArgument : public Argument {
-  private:
     T value;
 
   public:
-    ValueArgument(string long_name, string short_name, T value)
-        : Argument(long_name, short_name), value(value) {}
-    ~ValueArgument() = default;
-    auto getValue();
+    Argument(string long_name, T value) : long_name(long_name), value(value) {}
+    ~Argument() = default;
+    T getValue() { return value; };
 };
 
-/**
- * @brief Flag are declarative arguments which are present or not.
- * Their value are switching to true when they are detected in the command line.
- */
-class FlagArgument : ValueArgument<bool> {};
+template <typename T> class VerbosedArgument : public Argument<T> {
+  private:
+    string shortname;
 
-/**
- * @brief Class for numerical argument
- *
- * @tparam N can be either uint, int, float, double
- */
-template <typename N> class NumericalArgument : ValueArgument<N> {};
+  public:
+    string description;
+    VerbosedArgument(string long_name, T value, string short_name,
+                     string description)
+        : Argument<T>(long_name, value), shortname(shortname),
+          description(description) {}
+    ~VerbosedArgument() = default;
+};
 
 class ArgumentParser {
   private:
     static constexpr int MAX_ARG = 64;
-    std::list<Argument> expected_arguments;
+    string program_name;
+    string description;
+    string epilog = "";
+    std::map<int, string> raw_arguments;
+    std::vector<string> known_arguments;
 
   public:
-    ArgumentParser(bool has_default_args = true);
+    ArgumentParser(string program_name = "program", string description = "",
+                   string epilog = "")
+        : program_name(program_name), description(description),
+          epilog(epilog) {};
     ~ArgumentParser() = default;
-    std::map<int, string> parse(const int argc, const char *argv[]);
-    void add_expected_argument(string long_name, string short_name,
-                               ArgumentType type);
+    std::map<int, string> parse_args(const int argc, const char *argv[]);
+    void add_argument(string long_name);
+    void add_argument(string long_name, string short_name);
+    void print_help();
 };
 
 void print_all_args(int argc, char *argv[]);
-
-template <typename T> inline auto ValueArgument<T>::getValue() { return value; }

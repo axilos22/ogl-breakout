@@ -23,7 +23,7 @@ int no_arg() {
     string expected = "basicProgramName";
     int argc = 1;
     const char *argv[] = {expected.c_str(), ""};
-    auto parsed_args = parser.parse(argc, argv);
+    auto parsed_args = parser.parse_args(argc, argv);
 
     return expected.compare(parsed_args[argc - 1]);
 }
@@ -33,7 +33,7 @@ int one_arg() {
     string expected = "--version";
     int argc = 2;
     const char *argv[] = {"basicProgramName", expected.c_str()};
-    auto parsed_args = parser.parse(argc, argv);
+    auto parsed_args = parser.parse_args(argc, argv);
 
     return expected.compare(parsed_args[argc - 1]);
 }
@@ -43,18 +43,18 @@ int two_arg() {
     string expected = "--help";
     int argc = 3;
     const char *argv[] = {"basicProgramName", "--version", expected.c_str()};
-    auto parsed_args = parser.parse(argc, argv);
+    auto parsed_args = parser.parse_args(argc, argv);
 
     return expected.compare(parsed_args[argc - 1]);
 }
 
 int many_arg() {
     ArgumentParser parser;
-    string expected = "--boiz";
+    string expected = "noise";
     int argc = 5;
     const char *argv[] = {"basicProgramName", "--version", "make", "some",
                           expected.c_str()};
-    auto parsed_args = parser.parse(argc, argv);
+    auto parsed_args = parser.parse_args(argc, argv);
 
     return expected.compare(parsed_args[argc - 1]);
 }
@@ -67,7 +67,7 @@ int too_many_arg() {
         "basicProgramName", "--version", "make", "some", "noise",
         expected.c_str()};
     try {
-        auto parsed_args = parser.parse(argc, argv);
+        auto parsed_args = parser.parse_args(argc, argv);
         std::cout << "No Exception caught!" << std::endl;
         return -1;
     } catch (std::exception &e) {
