@@ -1,3 +1,5 @@
+![build_status](https://github.com/axilos22/ogl-breakout/actions/workflows/cmake-multi-platform.yml/badge.svg)
+
 # ogl-breakout
 Small game designed in OpenGL to mimic a breakout game
 
